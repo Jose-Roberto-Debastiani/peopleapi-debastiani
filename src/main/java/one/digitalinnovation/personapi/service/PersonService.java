@@ -5,20 +5,23 @@ import one.digitalinnovation.personapi.entity.Person;
 import one.digitalinnovation.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class PersonService {
 
-    private PersonService personService;
+    private PersonRepository personRepository;
 
     @Autowired
-    public PersonService(PersonService personService) {
-        this.personService = personService;
+    public PersonService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     public MessageResponseDto createPerson(Person person) {
-        return personService.createPerson(person);
+        Person savedPerson = personRepository.save(person);
+        return  MessageResponseDto
+                .builder()
+                .message("Created Person with ID " + savedPerson.getId())
+                .build();
     }
 
 
