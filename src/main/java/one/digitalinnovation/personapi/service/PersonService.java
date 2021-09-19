@@ -2,7 +2,7 @@ package one.digitalinnovation.personapi.service;
 
 import lombok.AllArgsConstructor;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
-import one.digitalinnovation.personapi.dto.response.MessageResponseDto;
+import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entity.Person;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.mapper.PersonMapper;
@@ -21,7 +21,7 @@ public class PersonService {
 
     private  final PersonMapper personMapper = PersonMapper.INSTANCE;
 
-    public MessageResponseDto createPerson(PersonDTO personDTO) {
+    public MessageResponseDTO createPerson(PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
         Person savedPerson = personRepository.save(personToSave);
         return createMessageResponse(savedPerson.getId(), "Created Person with ID ");
@@ -44,7 +44,7 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public MessageResponseDto updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+    public MessageResponseDTO updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException {
         verifyIfExists(id);
 
         Person personToUpdate = personMapper.toModel(personDTO);
@@ -56,8 +56,8 @@ public class PersonService {
         return personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
     }
 
-    private MessageResponseDto createMessageResponse(Long id, String message) {
-        return MessageResponseDto
+    private MessageResponseDTO createMessageResponse(Long id, String message) {
+        return MessageResponseDTO
                 .builder()
                 .message(message + id)
                 .build();
